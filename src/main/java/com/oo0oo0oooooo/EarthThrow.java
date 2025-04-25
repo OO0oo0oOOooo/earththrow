@@ -15,7 +15,6 @@ import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.earthbending.passive.DensityShift;
-import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.TempBlock;
@@ -41,10 +40,6 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
             return;
         }
 
-        if (bPlayer.isOnCooldown(this)) {
-            return;
-        }
-
         EarthThrow existing = getAbility(player, getClass());
         if (existing != null) {
             existing.remove();
@@ -61,7 +56,7 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
 
     @Override
     public void progress() {
-        if (player.isDead() || !player.isOnline()) {
+        if(!bPlayer.canBend(this)) {
             remove();
             return;
         }
@@ -105,10 +100,6 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
     }
 
     private void focusBlock() {
-        if (RegionProtection.isRegionProtected(this.player, _location)) {
-            return;
-        }
-
         if (DensityShift.isPassiveSand(_sourceBlock)) {
             DensityShift.revertSand(_sourceBlock);
         }
