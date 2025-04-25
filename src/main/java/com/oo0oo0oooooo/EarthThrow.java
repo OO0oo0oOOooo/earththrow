@@ -66,7 +66,7 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
             return;
         }
 
-        if (RegionProtection.isRegionProtected(this.player, _location)) {
+        if (_location.distance(player.getLocation()) > SOURCE_RANGE) {
             remove();
             return;
         }
@@ -97,15 +97,18 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
             return false;
         }
 
-        if (RegionProtection.isRegionProtected(this.player, _location)) {
-            return false;
-        }
-
         _sourceBlock = block;
+        _sourceType = _sourceBlock.getType();
+        _location = _sourceBlock.getLocation();
+
         return true;
     }
 
     private void focusBlock() {
+        if (RegionProtection.isRegionProtected(this.player, _location)) {
+            return;
+        }
+
         if (DensityShift.isPassiveSand(_sourceBlock)) {
             DensityShift.revertSand(_sourceBlock);
         }
@@ -128,14 +131,14 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
                 _sourceBlock.setType(Material.STONE);
                 break;
         }
-
-        _location = _sourceBlock.getLocation();
     }
 
     private void unfocusBlock() {
-        if (this._sourceBlock != null) {
-            this._sourceBlock.setType(this._sourceType);
+        if (_sourceBlock != null) {
+            _sourceBlock.setType(_sourceType);
             _sourceBlock = null;
+            _sourceType = null;
+            _location = null;
         }
     }
 
