@@ -26,7 +26,7 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
     private double HIT_RADIUS;
     private double SOURCE_RANGE;
     private double LAUNCH_STRENGTH;
-    
+
     private Location _location = null;
     private Block _sourceBlock = null;
     private Material _sourceType = null;
@@ -38,15 +38,15 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
         super(player);
 
         if (!bPlayer.canBend(this)) {
-            return; 
+            return;
         }
-        
+
         if (bPlayer.isOnCooldown(this)) {
             return;
         }
 
         EarthThrow existing = getAbility(player, getClass());
-        if(existing != null) {
+        if (existing != null) {
             existing.remove();
             return;
         }
@@ -56,22 +56,22 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
         if (prepare()) {
             focusBlock();
             start();
-		}
+        }
     }
 
     @Override
     public void progress() {
         if (player.isDead() || !player.isOnline()) {
-			remove();
-			return;
-		}
+            remove();
+            return;
+        }
 
         if (RegionProtection.isRegionProtected(this.player, _location)) {
             remove();
             return;
         }
 
-        if(_launchCodesConfirmed) {
+        if (_launchCodesConfirmed) {
             launch();
             remove();
             return;
@@ -80,22 +80,22 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
 
     public void setField() {
         COOLDOWN = ConfigManager.getConfig().getLong("ExtraAbilities.Jahko.Earth.EarthThrow.Cooldown");
-		SOURCE_RANGE = ConfigManager.getConfig().getDouble("ExtraAbilities.Jahko.Earth.EarthThrow.SourceRange");
-		LAUNCH_STRENGTH = ConfigManager.getConfig().getDouble("ExtraAbilities.Jahko.Earth.EarthThrow.LaunchStrength");
-		HIT_RADIUS = ConfigManager.getConfig().getDouble("ExtraAbilities.Jahko.Earth.EarthThrow.HitRadius");
+        SOURCE_RANGE = ConfigManager.getConfig().getDouble("ExtraAbilities.Jahko.Earth.EarthThrow.SourceRange");
+        LAUNCH_STRENGTH = ConfigManager.getConfig().getDouble("ExtraAbilities.Jahko.Earth.EarthThrow.LaunchStrength");
+        HIT_RADIUS = ConfigManager.getConfig().getDouble("ExtraAbilities.Jahko.Earth.EarthThrow.HitRadius");
     }
 
     public void onClick() {
         _launchCodesConfirmed = true;
     }
-    
+
     private boolean prepare() {
         final Block block = BlockSource.getEarthSourceBlock(player, SOURCE_RANGE, ClickType.SHIFT_DOWN);
-		if (block == null || !this.isEarthbendable(block)) {
-			return false;
-		} else if (TempBlock.isTempBlock(block) && !EarthAbility.isBendableEarthTempBlock(block)) {
-			return false;
-		}
+        if (block == null || !this.isEarthbendable(block)) {
+            return false;
+        } else if (TempBlock.isTempBlock(block) && !EarthAbility.isBendableEarthTempBlock(block)) {
+            return false;
+        }
 
         if (RegionProtection.isRegionProtected(this.player, _location)) {
             return false;
@@ -106,38 +106,38 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
     }
 
     private void focusBlock() {
-		if (DensityShift.isPassiveSand(_sourceBlock)) {
-			DensityShift.revertSand(_sourceBlock);
-		}
+        if (DensityShift.isPassiveSand(_sourceBlock)) {
+            DensityShift.revertSand(_sourceBlock);
+        }
 
         switch (_sourceBlock.getType()) {
             case SAND:
-			    _sourceType = Material.SAND;
-		    	_sourceBlock.setType(Material.SANDSTONE);
+                _sourceType = Material.SAND;
+                _sourceBlock.setType(Material.SANDSTONE);
                 break;
             case RED_SAND:
-		     	_sourceType = Material.RED_SAND;
-		        _sourceBlock.setType(Material.RED_SANDSTONE);
+                _sourceType = Material.RED_SAND;
+                _sourceBlock.setType(Material.RED_SANDSTONE);
                 break;
             case STONE:
-            	_sourceBlock.setType(Material.COBBLESTONE);
-            	_sourceType = Material.STONE;
+                _sourceBlock.setType(Material.COBBLESTONE);
+                _sourceType = Material.STONE;
                 break;
             default:
-    			_sourceType = _sourceBlock.getType();
-    			_sourceBlock.setType(Material.STONE);
+                _sourceType = _sourceBlock.getType();
+                _sourceBlock.setType(Material.STONE);
                 break;
         }
 
-		_location = _sourceBlock.getLocation();
-	}
+        _location = _sourceBlock.getLocation();
+    }
 
     private void unfocusBlock() {
         if (this._sourceBlock != null) {
-    		this._sourceBlock.setType(this._sourceType);
+            this._sourceBlock.setType(this._sourceType);
             _sourceBlock = null;
         }
-	}
+    }
 
     private void launch() {
         Vector dir = this.player.getEyeLocation().getDirection().clone().normalize().multiply(LAUNCH_STRENGTH);
@@ -185,11 +185,11 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
         _earthThrowListener = new EarthThrowListener();
         ProjectKorra.plugin.getServer().getPluginManager().registerEvents(_earthThrowListener, ProjectKorra.plugin);
 
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.Cooldown", 1000);
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.SourceRange", 10);
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.LaunchStrength", 2);
-		ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.HitRadius", 2);
-		ConfigManager.defaultConfig.save();
+        ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.Cooldown", 1000);
+        ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.SourceRange", 10);
+        ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.LaunchStrength", 2);
+        ConfigManager.getConfig().addDefault("ExtraAbilities.Jahko.Earth.EarthThrow.HitRadius", 2);
+        ConfigManager.defaultConfig.save();
     }
 
     @Override
