@@ -56,7 +56,7 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
 
     @Override
     public void progress() {
-        if(!bPlayer.canBend(this)) {
+        if (!bPlayer.canBend(this)) {
             remove();
             return;
         }

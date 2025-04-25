@@ -39,15 +39,12 @@ public class EarthThrowListener implements Listener {
          && event.getAction() != Action.LEFT_CLICK_BLOCK) {
             return;
         }
-
+        
         Player player = event.getPlayer();
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 
-        if (player == null)
-            return;
-
-        if (bPlayer == null)
-            return;
+        if (player == null) return;
+        if (bPlayer == null) return;
 
         EarthThrow earthThrow = CoreAbility.getAbility(player, EarthThrow.class);
         if (earthThrow != null) {
