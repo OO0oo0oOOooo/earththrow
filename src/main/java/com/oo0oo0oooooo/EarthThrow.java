@@ -40,8 +40,8 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
         if (!bPlayer.canBend(this)) {
             return; 
         }
-
-		if (bPlayer.isOnCooldown(this)) {
+        
+        if (bPlayer.isOnCooldown(this)) {
             return;
         }
 
