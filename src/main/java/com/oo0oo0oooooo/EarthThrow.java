@@ -61,7 +61,7 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
             return;
         }
 
-        if (_location.distance(player.getLocation()) > SOURCE_RANGE) {
+        if(_location.distanceSquared(player.getLocation()) > SOURCE_RANGE * SOURCE_RANGE) {
             remove();
             return;
         }
