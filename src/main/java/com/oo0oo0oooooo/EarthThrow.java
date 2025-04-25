@@ -37,8 +37,13 @@ public class EarthThrow extends EarthAbility implements AddonAbility {
     public EarthThrow(Player player) {
         super(player);
 
-        if (!bPlayer.canBend(this)) return;
-		if (bPlayer.isOnCooldown(this)) return;
+        if (!bPlayer.canBend(this)) {
+            return; 
+        }
+
+		if (bPlayer.isOnCooldown(this)) {
+            return;
+        }
 
         EarthThrow existing = getAbility(player, getClass());
         if(existing != null) {

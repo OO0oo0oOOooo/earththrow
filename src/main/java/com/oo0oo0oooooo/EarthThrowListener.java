@@ -17,10 +17,10 @@ public class EarthThrowListener implements Listener {
         Player player = event.getPlayer();
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 
-        if(player == null) return;
-        if(bPlayer == null) return;
-        if(event.isCancelled()) return;
-        if(player.isSneaking()) return;
+        if(player == null) { return; }
+        if(bPlayer == null) { return; }
+        if(event.isCancelled()) { return; }
+        if(player.isSneaking()) { return; }
 
         if (bPlayer.getBoundAbilityName().equalsIgnoreCase("EarthThrow")) {
             EarthThrow earthThrow = CoreAbility.getAbility(player, EarthThrow.class);
@@ -43,8 +43,8 @@ public class EarthThrowListener implements Listener {
         Player player = event.getPlayer();
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
         
-        if(player == null) return;
-        if(bPlayer == null) return;
+        if(player == null) { return; }
+        if(bPlayer == null) { return; }
 
         EarthThrow earthThrow = CoreAbility.getAbility(player, EarthThrow.class);
         if (earthThrow != null) {
